@@ -1,0 +1,25 @@
+{
+    "name": "neyra-ai/freshsales-php-sdk",
+    "license": "MIT",
+    "type": "library",
+    "description": "A wrapper to Freshsales API",
+    "keywords": ["freshsales"],
+    "homepage": "https://github.com/Neyra-ai/freshsales-php-sdk/",
+    "authors": [
+        {
+            "name": "Evgeniy Koval",
+            "email": "ekdev.ua@gmail.com",
+            "homepage": "https://github.com/infinitely-young",
+            "role": "Software Engineer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Freshsales\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.5"
+    }
+}
