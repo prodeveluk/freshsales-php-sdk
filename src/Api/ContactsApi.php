@@ -4,6 +4,7 @@ namespace Freshsales\Api;
 
 use Freshsales\Http\HttpClientInterface;
 use Freshsales\Http\ApiListResponse;
+use Freshsales\Model\Contact;
 
 /**
  * Class ContactsApi
@@ -39,6 +40,20 @@ class ContactsApi
         $data = json_decode($response->getData(), true);
 
         return new ApiListResponse($data['contacts'] ?? [], $data['meta'] ?? []);
+    }
+
+    /**
+     * Create
+     *
+     * @param Contact $contact
+     * @return int Contact ID
+     */
+    public function create(Contact $contact): int
+    {
+        $response = $this->httpClient->post($this->createUrl(''), $contact->asArray());
+        $data = json_decode($response->getData(), true);
+
+        return $data['contact']['id'];
     }
 
     /**

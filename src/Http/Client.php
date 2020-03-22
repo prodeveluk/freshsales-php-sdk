@@ -3,7 +3,6 @@
 namespace Freshsales\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class Client
@@ -39,11 +38,13 @@ class Client implements HttpClientInterface
      * @param string $path
      * @param array $data
      * @param array $headers
-     * @return mixed
+     * @return Response
      */
     public function post(string $path, array $data = [], array $headers = []): Response
     {
-        return $this->httpClient->post($path, ['json' => $data]);
+        $response = $this->httpClient->post($path, ['json' => $data]);
+
+        return new Response($response->getStatusCode(), $response->getBody()->getContents());
     }
 
     /**
@@ -52,18 +53,12 @@ class Client implements HttpClientInterface
      * @param string $path
      * @param array $data
      * @param array $headers
-     * @return mixed
+     * @return Response
      */
     public function get(string $path, array $data = [], array $headers = []): Response
     {
-        try {
-            /**
-             * @var ResponseInterface $response
-             */
-            $response = $this->httpClient->get($path, ['json' => $data]);
-        } catch (\Throwable $e) {
-            return new Response($e->getCode(), $e->getMessage());
-        }
+        var_dump($path);
+        $response = $this->httpClient->get($path, ['json' => $data]);
 
         return new Response($response->getStatusCode(), $response->getBody()->getContents());
     }

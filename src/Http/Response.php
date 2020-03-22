@@ -34,10 +34,9 @@ class Response
     /**
      * Get statusCode
      *
-     * @param int $statusCode
      * @return int
      */
-    public function getStatusCode(int $statusCode): int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
