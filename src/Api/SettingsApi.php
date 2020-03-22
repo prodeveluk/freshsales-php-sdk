@@ -4,6 +4,7 @@ namespace Freshsales\Api;
 
 use Freshsales\Http\HttpClientInterface;
 use Freshsales\Http\ApiListResponse;
+use Freshsales\Model\ContactField;
 use Freshsales\Model\DealField;
 
 /**
@@ -42,6 +43,25 @@ class SettingsApi
 
         foreach ($dealFields as $dealField) {
             $fields[] = new DealField($dealField);
+        }
+
+        return new ApiListResponse($fields);
+    }
+
+    /**
+     * Get contact fields
+     *
+     * @return ApiListResponse
+     */
+    public function contactFields(): ApiListResponse
+    {
+        $response = $this->httpClient->get($this->createUrl('/contacts/fields?include=field_group'), []);
+        $data = json_decode($response->getData(), true);
+        $contactFields = $data['fields'] ?? [];
+        $fields = [];
+
+        foreach ($contactFields as $contactField) {
+            $fields[] = new ContactField($contactField);
         }
 
         return new ApiListResponse($fields);

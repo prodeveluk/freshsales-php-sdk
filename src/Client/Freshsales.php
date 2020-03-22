@@ -10,11 +10,11 @@ use Freshsales\Api\SettingsApi;
 use Freshsales\Http\Client as HttpClient;
 
 /**
- * Class Client
+ * Class Freshsales
  *
  * @package Freshsales\Client
  */
-class Client
+class Freshsales
 {
     /**
      * @var ConfigurationsApi
@@ -42,7 +42,7 @@ class Client
     public $contacts;
 
     /**
-     * Client constructor.
+     * Freshsales constructor.
      *
      * @param array $config
      */

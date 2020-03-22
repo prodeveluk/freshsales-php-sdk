@@ -12,7 +12,7 @@ class ApiListResponse
     /**
      * @var array
      */
-    private $elements;
+    private $items;
 
     /**
      * @var array
@@ -22,12 +22,12 @@ class ApiListResponse
     /**
      * ApiListResponse constructor.
      *
-     * @param array $elements
+     * @param array $items
      * @param array $metaData
      */
-    public function __construct(array $elements, array $metaData = [])
+    public function __construct(array $items, array $metaData = [])
     {
-        $this->elements = $elements;
+        $this->items = $items;
         $this->metaData = $metaData;
     }
 
@@ -36,9 +36,9 @@ class ApiListResponse
      *
      * @return array
      */
-    public function getElements(): array
+    public function getItems(): array
     {
-        return $this->elements;
+        return $this->items;
     }
 
     /**

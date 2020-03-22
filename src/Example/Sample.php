@@ -8,10 +8,10 @@ $config = [
 ];
 $viewId = 13000164823;
 
-$client = new \Freshsales\Client\Client($config);
+$client = new \Freshsales\Client\Freshsales($config);
 
 //$leadListResponse = $client->leads->list($viewId);
 //var_dump($leadListResponse->getElements());
 
 $dealStages = $client->settings->dealFields();
-var_dump($dealStages->getElements());
+var_dump($dealStages->getItems());
