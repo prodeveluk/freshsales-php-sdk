@@ -3,8 +3,8 @@
 require (__DIR__ . '/../../vendor/autoload.php');
 
 $config = [
-    'domain' => 'https://neyra-koval.freshsales.io',
-    'app_token' => 'PkufZJfRg_Xk6bhohOkFWA'
+    'domain' => 'api_domain',
+    'app_token' => 'api_token'
 ];
 $viewId = 13000164823;
 
