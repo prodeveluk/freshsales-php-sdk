@@ -25,6 +25,16 @@ abstract class AbstractApiObject
     }
 
     /**
+     * Get id
+     *
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->data['id'] ?? null;
+    }
+
+    /**
      * Get field value
      *
      * @param string $field
