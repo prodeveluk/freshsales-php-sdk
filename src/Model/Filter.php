@@ -16,6 +16,6 @@ class Filter extends AbstractApiObject
      */
     public function getName(): ?string
     {
-        return (string)$this->data['name'];
+        return $this->getFieldValue('name');
     }
 }

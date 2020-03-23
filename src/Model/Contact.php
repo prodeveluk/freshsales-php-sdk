@@ -18,4 +18,24 @@ class Contact extends AbstractApiObject
     {
         return $this->data['email'] ?? null;
     }
+
+    /**
+     * getWorkPhone
+     *
+     * @return string|null
+     */
+    public function getWorkPhone(): ?string
+    {
+        return $this->data['work_number'] ?? null;
+    }
+
+    /**
+     * getMobilePhone
+     *
+     * @return string|null
+     */
+    public function getMobilePhone(): ?string
+    {
+        return $this->data['mobile_number'] ?? null;
+    }
 }

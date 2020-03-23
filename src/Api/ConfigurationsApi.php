@@ -3,6 +3,7 @@
 namespace Freshsales\Api;
 
 use Freshsales\Http\ApiListResponse;
+use Freshsales\Model\Currency;
 use Freshsales\Model\DealPipeline;
 use Freshsales\Model\DealStage;
 
@@ -49,6 +50,29 @@ class ConfigurationsApi extends AbstractApi
         }
 
         return new ApiListResponse($pipelines);
+    }
+
+    /**
+     * Get currencies
+     *
+     * @return ApiListResponse
+     */
+    public function currencies(): ApiListResponse
+    {
+        $queryParameters = [
+            'sort' => 'id',
+            'sort_type' => 'asc'
+        ];
+        $url = $this->createUrl('/currencies', $queryParameters);
+        $response = $this->getFromApi($url);
+        $currenciesData = $response['currencies'] ?? [];
+        $currencies = [];
+
+        foreach ($currenciesData as $currencyData) {
+            $currencies[] = new Currency($currencyData);
+        }
+
+        return new ApiListResponse($currencies);
     }
 
     /**
