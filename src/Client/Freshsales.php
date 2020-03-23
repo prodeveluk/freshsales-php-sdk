@@ -7,6 +7,7 @@ use Freshsales\Api\ConfigurationsApi;
 use Freshsales\Api\ContactsApi;
 use Freshsales\Api\DealsApi;
 use Freshsales\Api\LeadsApi;
+use Freshsales\Api\SearchApi;
 use Freshsales\Api\SettingsApi;
 use Freshsales\Http\Client as HttpClient;
 use Freshsales\Http\HttpClientInterface;
@@ -19,6 +20,7 @@ use Freshsales\Http\HttpClientInterface;
  * @property ContactsApi $contacts
  * @property DealsApi $deals
  * @property LeadsApi $leads
+ * @property SearchApi $search
  *
  * @package Freshsales\Client
  */
