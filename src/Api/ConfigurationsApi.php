@@ -2,8 +2,8 @@
 
 namespace Freshsales\Api;
 
-use Freshsales\Http\HttpClientInterface;
 use Freshsales\Http\ApiListResponse;
+use Freshsales\Model\DealPipeline;
 use Freshsales\Model\DealStage;
 
 /**
@@ -11,23 +11,8 @@ use Freshsales\Model\DealStage;
  *
  * @package Freshsales\Api
  */
-class ConfigurationsApi
+class ConfigurationsApi extends AbstractApi
 {
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * LeadsApi constructor.
-     *
-     * @param HttpClientInterface $httpClient
-     */
-    public function __construct(HttpClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * Get deal stages
      *
@@ -35,9 +20,9 @@ class ConfigurationsApi
      */
     public function dealStages(): ApiListResponse
     {
-        $response = $this->httpClient->get($this->createUrl('/deal_stages/'), []);
-        $data = json_decode($response->getData(), true);
-        $dealStages = $data['deal_stages'] ?? [];
+        $url = $this->createUrl('/deal_stages');
+        $response = $this->getFromApi($url);
+        $dealStages = $response['deal_stages'] ?? [];
         $stages = [];
 
         foreach ($dealStages as $dealStage) {
@@ -48,15 +33,29 @@ class ConfigurationsApi
     }
 
     /**
-     * Create url
+     * Get deal pipelines
      *
-     * @param string $path
-     * @return string
+     * @return ApiListResponse
      */
-    private function createUrl(string $path): string
+    public function dealPipelines(): ApiListResponse
     {
-        $preparedPath = trim($path, '/');
+        $url = $this->createUrl('/deal_pipelines');
+        $response = $this->getFromApi($url);
+        $dealPipelines = $response['deal_pipelines'] ?? [];
+        $pipelines = [];
 
-        return '/api/selector/' . $preparedPath;
+        foreach ($dealPipelines as $dealPipeline) {
+            $pipelines[] = new DealPipeline($dealPipeline);
+        }
+
+        return new ApiListResponse($pipelines);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getBaseApiPath(): string
+    {
+        return '/api/selector/';
     }
 }

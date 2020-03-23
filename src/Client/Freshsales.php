@@ -2,44 +2,32 @@
 
 namespace Freshsales\Client;
 
+use Freshsales\Api\AbstractApi;
 use Freshsales\Api\ConfigurationsApi;
 use Freshsales\Api\ContactsApi;
 use Freshsales\Api\DealsApi;
 use Freshsales\Api\LeadsApi;
 use Freshsales\Api\SettingsApi;
 use Freshsales\Http\Client as HttpClient;
+use Freshsales\Http\HttpClientInterface;
 
 /**
  * Class Freshsales
+ *
+ * @property ConfigurationsApi $configurations
+ * @property SettingsApi $settings
+ * @property ContactsApi $contacts
+ * @property DealsApi $deals
+ * @property LeadsApi $leads
  *
  * @package Freshsales\Client
  */
 class Freshsales
 {
     /**
-     * @var ConfigurationsApi
+     * @var HttpClientInterface
      */
-    public $configurations;
-
-    /**
-     * @var SettingsApi
-     */
-    public $settings;
-
-    /**
-     * @var LeadsApi
-     */
-    public $leads;
-
-    /**
-     * @var DealsApi
-     */
-    public $deals;
-
-    /**
-     * @var ContactsApi
-     */
-    public $contacts;
+    private $httpClient;
 
     /**
      * Freshsales constructor.
@@ -48,13 +36,23 @@ class Freshsales
      */
     public function __construct(array $config)
     {
-        $httpClient = new HttpClient($config);
+        $this->httpClient = new HttpClient($config);
+    }
 
-        $this->configurations = new ConfigurationsApi($httpClient);
-        $this->settings = new SettingsApi($httpClient);
+    /**
+     * Create Api by calling property
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function __get(string $name): AbstractApi
+    {
+        $classname = '\\Freshsales\\Api\\' . ucfirst($name) . 'Api';
 
-        $this->leads = new LeadsApi($httpClient);
-        $this->deals = new DealsApi($httpClient);
-        $this->contacts = new ContactsApi($httpClient);
+        if (!class_exists($classname)) {
+            throw new \InvalidArgumentException('Api not exists: ' . $name);
+        }
+
+        return new $classname($this->httpClient);
     }
 }

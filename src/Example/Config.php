@@ -22,7 +22,7 @@ class Config
         $dotenv->load(__DIR__ . '/.env');
 
         return [
-            'app_domain' => $_ENV['DOMAIN'],
+            'domain' => $_ENV['DOMAIN'],
             'app_token' => $_ENV['APP_TOKEN']
         ];
     }

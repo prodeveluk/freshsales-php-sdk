@@ -14,7 +14,6 @@ try {
         'id' => 1,
         'first_name' => 'Test3',
         'last_name' => 'User3',
-        'email' => 'test.user3@test.com',
         'mobile_number' => '3-625-555-9503',
         'custom_field' => [
             'cf_val1' => 'test',

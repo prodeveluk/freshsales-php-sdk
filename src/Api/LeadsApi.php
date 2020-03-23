@@ -2,7 +2,6 @@
 
 namespace Freshsales\Api;
 
-use Freshsales\Http\HttpClientInterface;
 use Freshsales\Http\ApiListResponse;
 use Freshsales\Model\Lead;
 
@@ -11,53 +10,46 @@ use Freshsales\Model\Lead;
  *
  * @package Freshsales\Api
  */
-class LeadsApi
+class LeadsApi extends AbstractObjectApi
 {
     /**
-     * @var
+     * {@inheritDoc}
      */
-    private $httpClient;
-
-    /**
-     * LeadsApi constructor.
-     *
-     * @param HttpClientInterface $httpClient
-     */
-    public function __construct(HttpClientInterface $httpClient)
+    public function list(int $viewId, array $queryParameters = []): ApiListResponse
     {
-        $this->httpClient = $httpClient;
-    }
+        $parameters = $queryParameters;
+        $parameters['per_page'] = 1000;
+        $url = $this->createUrl('/view/' . $viewId, $parameters);
 
-    /**
-     * List all
-     *
-     * @param int $viewId
-     * @return ApiListResponse
-     */
-    public function list(int $viewId): ApiListResponse
-    {
-        $response = $this->httpClient->get($this->createUrl('/view/' . $viewId), []);
-        $data = json_decode($response->getData(), true);
-        $leadsResponse = $data['leads'] ?? [];
+        $response = $this->getFromApi($url, []);
         $leads = [];
 
-        foreach ($leadsResponse as $leadResponse) {
-            $leads[] = new Lead($leadResponse);
+        foreach ($response['leads'] ?? [] as $leadData) {
+            $leads[] = new Lead($leadData);
         }
 
         return new ApiListResponse($leads, $data['meta'] ?? []);
     }
 
     /**
-     * Create url
+     * Create
      *
-     * @param string $path
-     * @return string
+     * @param Lead $lead
+     * @return int
      */
-    private function createUrl(string $path): string
+    public function create(Lead $lead): int
     {
-        $preparedPath = trim($path, '/');
+        $url = $this->createUrl('');
+        $response = $this->postToApi($url, $lead->asArray());
 
-        return '/api/leads/' . $preparedPath;
+        return $response['lead']['id'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getBaseApiPath(): string
+    {
+        return '/api/leads/';
     }
 }

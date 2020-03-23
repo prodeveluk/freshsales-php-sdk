@@ -2,7 +2,6 @@
 
 namespace Freshsales\Api;
 
-use Freshsales\Http\HttpClientInterface;
 use Freshsales\Http\ApiListResponse;
 use Freshsales\Model\ContactField;
 use Freshsales\Model\DealField;
@@ -12,23 +11,8 @@ use Freshsales\Model\DealField;
  *
  * @package Freshsales\Api
  */
-class SettingsApi
+class SettingsApi extends AbstractApi
 {
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * LeadsApi constructor.
-     *
-     * @param HttpClientInterface $httpClient
-     */
-    public function __construct(HttpClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * Get deal fields
      *
@@ -36,9 +20,9 @@ class SettingsApi
      */
     public function dealFields(): ApiListResponse
     {
-        $response = $this->httpClient->get($this->createUrl('/deals/fields?include=field_group'), []);
-        $data = json_decode($response->getData(), true);
-        $dealFields = $data['fields'] ?? [];
+        $url = $this->createUrl('/deals/fields?include=field_group');
+        $response = $this->getFromApi($url);
+        $dealFields = $response['fields'] ?? [];
         $fields = [];
 
         foreach ($dealFields as $dealField) {
@@ -55,9 +39,9 @@ class SettingsApi
      */
     public function contactFields(): ApiListResponse
     {
-        $response = $this->httpClient->get($this->createUrl('/contacts/fields?include=field_group'), []);
-        $data = json_decode($response->getData(), true);
-        $contactFields = $data['fields'] ?? [];
+        $url = $this->createUrl('/contacts/fields?include=field_group');
+        $response = $this->getFromApi($url);
+        $contactFields = $response['fields'] ?? [];
         $fields = [];
 
         foreach ($contactFields as $contactField) {
@@ -68,15 +52,10 @@ class SettingsApi
     }
 
     /**
-     * Create url
-     *
-     * @param string $path
-     * @return string
+     * {@inheritDoc}
      */
-    private function createUrl(string $path): string
+    protected function getBaseApiPath(): string
     {
-        $preparedPath = trim($path, '/');
-
-        return '/api/settings/' . $preparedPath;
+        return '/api/settings/';
     }
 }

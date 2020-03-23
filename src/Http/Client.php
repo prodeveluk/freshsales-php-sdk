@@ -57,7 +57,6 @@ class Client implements HttpClientInterface
      */
     public function get(string $path, array $data = [], array $headers = []): Response
     {
-        var_dump($path);
         $response = $this->httpClient->get($path, ['json' => $data]);
 
         return new Response($response->getStatusCode(), $response->getBody()->getContents());

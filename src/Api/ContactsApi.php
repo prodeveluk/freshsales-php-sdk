@@ -2,7 +2,6 @@
 
 namespace Freshsales\Api;
 
-use Freshsales\Http\HttpClientInterface;
 use Freshsales\Http\ApiListResponse;
 use Freshsales\Model\Contact;
 
@@ -11,35 +10,25 @@ use Freshsales\Model\Contact;
  *
  * @package Freshsales\Api
  */
-class ContactsApi
+class ContactsApi extends AbstractObjectApi
 {
     /**
-     * @var
+     * {@inheritDoc}
      */
-    private $httpClient;
-
-    /**
-     * LeadsApi constructor.
-     *
-     * @param HttpClientInterface $httpClient
-     */
-    public function __construct(HttpClientInterface $httpClient)
+    public function list(int $viewId, array $queryParameters = []): ApiListResponse
     {
-        $this->httpClient = $httpClient;
-    }
+        $parameters = $queryParameters;
+        $parameters['per_page'] = 1000;
+        $url = $this->createUrl('/view/'. $viewId, $parameters);
 
-    /**
-     * List all
-     *
-     * @param int $viewId
-     * @return ApiListResponse
-     */
-    public function list(int $viewId): ApiListResponse
-    {
-        $response = $this->httpClient->get($this->createUrl('/view/' . $viewId), []);
-        $data = json_decode($response->getData(), true);
+        $response = $this->getFromApi($url, []);
+        $contacts = [];
 
-        return new ApiListResponse($data['contacts'] ?? [], $data['meta'] ?? []);
+        foreach ($response['contacts'] ?? [] as $contactData) {
+            $contacts[] = new Contact($contactData);
+        }
+
+        return new ApiListResponse($contacts, $data['meta'] ?? []);
     }
 
     /**
@@ -50,22 +39,17 @@ class ContactsApi
      */
     public function create(Contact $contact): int
     {
-        $response = $this->httpClient->post($this->createUrl(''), $contact->asArray());
-        $data = json_decode($response->getData(), true);
+        $url = $this->createUrl('');
+        $response = $this->postToApi($url, $contact->asArray());
 
-        return $data['contact']['id'];
+        return $response['contact']['id'];
     }
 
     /**
-     * Create url
-     *
-     * @param string $path
-     * @return string
+     * {@inheritDoc}
      */
-    private function createUrl(string $path): string
+    protected function getBaseApiPath(): string
     {
-        $preparedPath = trim($path, '/');
-
-        return '/api/contacts/' . $preparedPath;
+        return '/api/contacts/';
     }
 }
