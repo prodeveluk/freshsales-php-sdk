@@ -14,4 +14,8 @@ class ContactFields extends BaseFields
     public const WORK_PHONE = 'work_number';
 
     public const EMAIL = 'email';
+
+    public const FIRST_NAME = 'first_name';
+
+    public const LAST_NAME = 'last_name';
 }

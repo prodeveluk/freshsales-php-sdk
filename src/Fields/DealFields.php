@@ -9,6 +9,8 @@ namespace Freshsales\Fields;
  */
 class DealFields extends BaseFields
 {
+    public const NAME = 'name';
+
     public const AMOUNT = 'amount';
 
     public const CONTACT_ADDED_LIST = 'contacts_added_list';
