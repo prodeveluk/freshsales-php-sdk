@@ -20,6 +20,16 @@ interface HttpClientInterface
     public function post(string $url, array $data = [], array $headers = []): Response;
 
     /**
+     * post
+     *
+     * @param string $url
+     * @param array $data
+     * @param array $headers
+     * @return Response
+     */
+    public function put(string $url, array $data = [], array $headers = []): Response;
+
+    /**
      * get
      *
      * @param string $url

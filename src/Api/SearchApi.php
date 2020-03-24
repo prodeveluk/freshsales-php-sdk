@@ -3,8 +3,10 @@
 namespace Freshsales\Api;
 
 use Freshsales\Fields\ContactFields;
+use Freshsales\Fields\DealFields;
 use Freshsales\Http\ApiListResponse;
 use Freshsales\Model\Contact;
+use Freshsales\Model\Deal;
 
 /**
  * Class SearchApi
@@ -38,6 +40,30 @@ class SearchApi extends AbstractApi
         }
 
         return new ApiListResponse($contacts, $data['meta'] ?? []);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @TODO: Not working with updated at. Work in progress
+     */
+    public function lastModifiedDeals(string $minUpdatedAt): ApiListResponse
+    {
+        $url = $this->createUrl('/deal');
+
+        $parameters = [
+            'filter_rule' => [
+                ['attribute' => DealFields::UPDATED_AT, 'operator' => 'is_in', 'value' => $minUpdatedAt]
+            ]
+        ];
+        $response = $this->postToApi($url, $parameters);
+        $deals = [];
+
+        foreach ($response['deals'] ?? [] as $dealData) {
+            $deals[] = new Deal($dealData);
+        }
+
+        return new ApiListResponse($deals, $data['meta'] ?? []);
     }
 
     /**

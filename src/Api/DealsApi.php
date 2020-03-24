@@ -40,9 +40,24 @@ class DealsApi extends AbstractObjectApi
     public function create(Deal $deal): int
     {
         $url = $this->createUrl('');
-        $response = $this->postToApi($url, $deal->asArray());
+        $response = $this->postToApi($url, ['deal' => $deal->asArray()]);
 
         return $response['deal']['id'];
+    }
+
+    /**
+     * Update
+     *
+     * @param int $dealId
+     * @param Deal $deal
+     * @return Deal
+     */
+    public function update(int $dealId, Deal $deal): Deal
+    {
+        $url = $this->createUrl((string)$dealId);
+        $response = $this->putToApi($url, ['deal' => $deal->asArray()]);
+
+        return new Deal($response['deal']);
     }
 
     /**

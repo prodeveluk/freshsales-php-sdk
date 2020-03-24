@@ -11,14 +11,15 @@ $config = Config::getCredentials();
 $client = new Freshsales($config);
 
 try {
+    $dealId = 13000018964;
     $dealData = [
-        'name' => 'Test Deal',
-        'amount' => 0,
-        DealFields::CONTACT_ADDED_LIST => [13000241059]
+        'name' => 'Updated Name',
+        'amount' => 100,
+        DealFields::CONTACT_ADDED_LIST => [13000254988]
     ];
     $deal = new Deal($dealData);
-    $createdDealId = $client->deals->create($deal);
-    var_dump($createdDealId);
+    $updatedDeal = $client->deals->update($dealId, $deal);
+    var_dump($updatedDeal);
 } catch (Throwable $e) {
     var_dump($e->getCode(), $e->getMessage());
 }

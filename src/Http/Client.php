@@ -48,6 +48,21 @@ class Client implements HttpClientInterface
     }
 
     /**
+     * post
+     *
+     * @param string $path
+     * @param array $data
+     * @param array $headers
+     * @return Response
+     */
+    public function put(string $path, array $data = [], array $headers = []): Response
+    {
+        $response = $this->httpClient->put($path, ['json' => $data]);
+
+        return new Response($response->getStatusCode(), $response->getBody()->getContents());
+    }
+
+    /**
      * get
      *
      * @param string $path

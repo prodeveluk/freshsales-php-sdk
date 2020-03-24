@@ -57,6 +57,21 @@ abstract class AbstractApi
     }
 
     /**
+     * Put to api
+     *
+     * @param string $url
+     * @param array $data
+     * @param array $headers
+     * @return array
+     */
+    public function putToApi(string $url, array $data = [], array $headers = []): array
+    {
+        $response = $this->httpClient->put($url, $data, $headers);
+
+        return json_decode($response->getData(), true);
+    }
+
+    /**
      * Create url
      *
      * @param string $path

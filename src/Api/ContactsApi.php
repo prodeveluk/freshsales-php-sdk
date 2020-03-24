@@ -40,7 +40,7 @@ class ContactsApi extends AbstractObjectApi
     public function create(Contact $contact): int
     {
         $url = $this->createUrl('');
-        $response = $this->postToApi($url, $contact->asArray());
+        $response = $this->postToApi($url, ['contact' => $contact->asArray()]);
 
         return $response['contact']['id'];
     }
