@@ -46,6 +46,20 @@ class ContactsApi extends AbstractObjectApi
     }
 
     /**
+     * Create
+     *
+     * @param Contact $contact
+     * @return int Contact ID
+     */
+    public function update($contactId, Contact $contact): Contact
+    {
+        $url = $this->createUrl((string)$contactId);
+        $response = $this->putToApi($url, ['contact' => $contact->asArray()]);
+
+        return new Contact($response['contact']);
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function getBaseApiPath(): string
