@@ -82,7 +82,7 @@ abstract class AbstractApi
     {
         $preparedPath = trim($path, '/ ');
         $baseApiPath = trim($this->getBaseApiPath(), '/ ');
-        $url = '/' . $baseApiPath . '/' . $preparedPath;
+        $url = $baseApiPath . '/' . $preparedPath;
 
         if ($query !== []) {
             return $url . '?' . http_build_query($query);
