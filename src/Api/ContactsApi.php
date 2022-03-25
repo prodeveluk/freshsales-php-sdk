@@ -35,21 +35,22 @@ class ContactsApi extends AbstractObjectApi
      * Create
      *
      * @param Contact $contact
-     * @return int Contact ID
+     * @return Contact Contact
      */
-    public function create(Contact $contact): int
+    public function create(Contact $contact): Contact
     {
         $url = $this->createUrl('');
         $response = $this->postToApi($url, ['contact' => $contact->asArray()]);
 
-        return $response['contact']['id'];
+        return new Contact($response['contact']);
     }
 
     /**
-     * Create
+     * Update
      *
+     * @param $contactId
      * @param Contact $contact
-     * @return int Contact ID
+     * @return Contact Contact ID
      */
     public function update($contactId, Contact $contact): Contact
     {
